@@ -119,6 +119,55 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &274700254
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 274700256}
+  - component: {fileID: 274700255}
+  m_Layer: 0
+  m_Name: ToMoveBoard
+  m_TagString: Untagged
+  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &274700255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 274700254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1113c19256a80e74c87076c4a532f2e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  width: 2
+  height: 1
+  bgTilePrefab: {fileID: 8642536961268037462, guid: 1b097e7b104b0e3459022b264f42da50, type: 3}
+  bgTiles: []
+  bgTilesTransform: []
+--- !u!4 &274700256
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 274700254}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.9379984, y: -1.76, z: -0.05585045}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,6 +420,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 6
   height: 6
+  gemSpeed: 5
   bgTilePrefab: {fileID: 8642536961268037462, guid: 1b097e7b104b0e3459022b264f42da50, type: 3}
   gems:
   - {fileID: 2519210119460255655, guid: c30d8de066bf2214f984baedb52ce8a1, type: 3}
@@ -423,9 +473,11 @@ MonoBehaviour:
   width: 2
   height: 1
   bgTilePrefab: {fileID: 8642536961268037462, guid: 1b097e7b104b0e3459022b264f42da50, type: 3}
+  board: {fileID: 0}
   gems:
   - {fileID: 2519210119460255655, guid: c30d8de066bf2214f984baedb52ce8a1, type: 3}
   - {fileID: 5717958041733864928, guid: f527bef37031bbf4d83605b1589cb0b8, type: 3}
+  interactGems: []
 --- !u!4 &1554356567
 Transform:
   m_ObjectHideFlags: 0
@@ -435,7 +487,7 @@ Transform:
   m_GameObject: {fileID: 1554356565}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: -2, z: 0}
+  m_LocalPosition: {x: 2, y: -3.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -449,3 +501,4 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 803379349}
   - {fileID: 1554356567}
+  - {fileID: 274700256}

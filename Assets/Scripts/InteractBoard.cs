@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -13,9 +14,11 @@ public class InteractBoard : MonoBehaviour
     public Board board;
     public Gem[] gems;
     public List<Gem> interactGems = new List<Gem>();
+    private ToMoveBoard moveBoard;
     private void Awake()
     {
         board = FindObjectOfType<Board>();
+        moveBoard = FindObjectOfType<ToMoveBoard>();
     }
 
     void Start()
@@ -65,24 +68,53 @@ public class InteractBoard : MonoBehaviour
             {
                 foreach (Gem bGem in board.bottomGems)
                 {
-                    if (iGem.type == bGem.type &&  bGem != null)
+                    if (iGem.type == bGem.type && bGem != null)
                     {
-                            Destroy(bGem.gameObject);
-                            iGem.bGemDestoryed++;
-                            
-
-                            if (iGem.bGemDestoryed >= iGem.shootId)
-                            {
-                                iGem.mousePressed = false;
-                                iGem.bGemDestoryed = 0;
-                                Destroy(iGem.gameObject);
-                                interactGems.Remove(iGem);
-                                break; 
-                            }
+                        StartCoroutine(MoveToBoard(iGem, bGem));
+                        //break;
                     }
                 }
                 StartCoroutine(board.DecreaseRowCo());
             }
         }
     }
+
+    private IEnumerator MoveToBoard(Gem iGem, Gem bGem)
+    {
+        // Wait for 0.1 seconds before starting movement
+        yield return new WaitForSeconds(0.1f);
+
+        // Move gem to the board
+        float elapsedTime = 0f;
+        Vector3 startingPos = iGem.transform.position;
+        Vector3 targetPos = moveBoard.bgTilesTransform[0].position;
+            
+
+        // Move the gem using Lerp
+        while (elapsedTime < 1f)
+        {
+            iGem.transform.position = Vector2.Lerp(startingPos, targetPos, elapsedTime);
+            elapsedTime += Time.deltaTime * board.gemSpeed;
+            yield return null; // Wait until the next frame
+        }
+
+        // Ensure the gem is exactly at the target position
+        iGem.transform.position = targetPos;
+
+        // Destroy the bottom gem and increment the counter for destroyed gems
+        Destroy(bGem.gameObject);
+        iGem.bGemDestoryed++;
+
+        // Check if enough gems are destroyed, then proceed to the next step
+        if (iGem.bGemDestoryed >= iGem.shootId)
+        {
+            iGem.mousePressed = false;
+            iGem.bGemDestoryed = 0;
+            Destroy(iGem.gameObject); // Destroy the interacting gem
+            interactGems.Remove(iGem); // Remove it from the list
+              
+        }
+        
+    }
+
 }
