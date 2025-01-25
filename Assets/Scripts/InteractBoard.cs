@@ -57,9 +57,12 @@ public class InteractBoard : MonoBehaviour
                 {
                     if (iGem.type == bGem.type &&  bGem != null)
                     {
+                        iGem.mousePressed = false;
                         Destroy(bGem.gameObject);
                     }
                 }
+
+                StartCoroutine(board.DecreaseRowCo());
             }
         }
     }

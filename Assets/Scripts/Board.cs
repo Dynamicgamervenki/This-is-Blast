@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,7 +9,8 @@ public class Board : MonoBehaviour
 {
     public int width;
     public int height;
-    
+
+    public float gemSpeed = 5.0f;
     public GameObject bgTilePrefab;
     public Gem[] gems;
     
@@ -78,6 +80,50 @@ public class Board : MonoBehaviour
 
         if(bottomGems.Count > 0)
         bottomGems = bottomGems.Distinct().ToList();
+    }
+    
+    public IEnumerator DecreaseRowCo()
+    {
+        yield return new WaitForSecondsRealtime(.2f);
+        Debug.Log("Entering Coroutine");
+        int nullCounter = 0;
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (allGems[x,y] == null)
+                {
+                    nullCounter++;
+                }
+                else if(nullCounter > 0)
+                {
+                    allGems[x,y].posIndex.y -= nullCounter;
+                    allGems[x,y - nullCounter] = allGems[x, y];
+                    allGems[x, y] = null;
+                }
+            }
+            
+            nullCounter = 0;
+        }
+        UpdateBottomGemsList();
+
+        Debug.Log("Bottom list updated!");
+    }
+    
+    
+    private void UpdateBottomGemsList()
+    {
+        bottomGems.Clear(); 
+
+        // Add gems from the bottom row (y = 0)
+        for (int x = 0; x < width; x++)
+        {
+            if (allGems[x, 0] != null) // Ensure there's a gem in the bottom row
+            {
+                bottomGems.Add(allGems[x, 0]);
+            }
+        }
     }
 
 }
