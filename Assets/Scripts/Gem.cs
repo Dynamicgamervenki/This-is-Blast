@@ -8,7 +8,8 @@ public class Gem : MonoBehaviour
     public Board board;
 
     public InteractBoard interactBoard;
-    
+    public int shootId = 0;
+    public int bGemDestoryed = 0;
 
     public bool mousePressed;
     

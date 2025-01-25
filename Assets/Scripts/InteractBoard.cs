@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -32,12 +33,21 @@ public class InteractBoard : MonoBehaviour
                 bgTile.transform.SetParent(transform);
                 bgTile.name = "BgTile - " + i + "," + j;
                 
-                int gemToUse = Random.Range(0, gems.Length);
+                int gemToUse;               //temporory spawn logic for basic testing
+                if (i < width / 2) 
+                {
+                    gemToUse = Random.Range(0, gems.Length / 2);
+                }
+                else
+                {
+                    gemToUse = Random.Range(gems.Length / 2, gems.Length);
+                }
                 Gem gem = Instantiate(gems[gemToUse],position,Quaternion.identity);
                 gem.transform.SetParent(transform);
                 gem.name = "Gem - " + i + "," + j;
                 gem.gameObject.layer = 6;
                 interactGems.Add(gem);
+                gem.shootId = 10;
             }
         }
     }
@@ -57,11 +67,20 @@ public class InteractBoard : MonoBehaviour
                 {
                     if (iGem.type == bGem.type &&  bGem != null)
                     {
-                        iGem.mousePressed = false;
-                        Destroy(bGem.gameObject);
+                            Destroy(bGem.gameObject);
+                            iGem.bGemDestoryed++;
+                            
+
+                            if (iGem.bGemDestoryed >= iGem.shootId)
+                            {
+                                iGem.mousePressed = false;
+                                iGem.bGemDestoryed = 0;
+                                Destroy(iGem.gameObject);
+                                interactGems.Remove(iGem);
+                                break; 
+                            }
                     }
                 }
-
                 StartCoroutine(board.DecreaseRowCo());
             }
         }
