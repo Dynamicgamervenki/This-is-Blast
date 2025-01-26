@@ -14,6 +14,7 @@ public class Board : MonoBehaviour
     public GameObject bgTilePrefab;
     public Gem[] gems;
     
+    
     public Gem[,] allGems;
     
     public List<Gem> bottomGems = new List<Gem>();
@@ -21,11 +22,6 @@ public class Board : MonoBehaviour
     {
         allGems = new Gem[width, height];
         SetUp();
-    }
-
-    private void Update()
-    {
-        UpdateBottomGems();
     }
 
     private void SetUp()
@@ -50,8 +46,14 @@ public class Board : MonoBehaviour
                 }
             
                 SpawnGem(new Vector2Int(i, j), gems[gemToUse]);
+                if (j == 0)
+                {
+                    bottomGems.Add(allGems[i,j]);
+                }
             }
         }
+
+        UpdateBottomGemsList();
     }
     
     private void SpawnGem(Vector2Int pos,Gem gemToSpawn)
@@ -63,24 +65,7 @@ public class Board : MonoBehaviour
 
         gem.SetupGem(pos, this);
     }
-
-    private void UpdateBottomGems()
-    {
-      //  bottomGems.Clear();
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < height; j++)
-            {
-                if (j == 0)
-                {
-                    bottomGems.Add(allGems[i,j]);
-                }
-            }
-        }
-
-        if(bottomGems.Count > 0)
-        bottomGems = bottomGems.Distinct().ToList();
-    }
+    
     
     public IEnumerator DecreaseRowCo()
     {
@@ -106,24 +91,22 @@ public class Board : MonoBehaviour
             
             nullCounter = 0;
         }
-        UpdateBottomGemsList();
 
-        Debug.Log("Bottom list updated!");
+       UpdateBottomGemsList();
+
+//        Debug.Log("Bottom list updated!");
     }
     
     
-    private void UpdateBottomGemsList()
+    public void UpdateBottomGemsList()
     {
-        bottomGems.Clear(); 
-
+        //bottomGems.Clear();
         // Add gems from the bottom row (y = 0)
         for (int x = 0; x < width; x++)
         {
-            if (allGems[x, 0] != null) // Ensure there's a gem in the bottom row
-            {
                 bottomGems.Add(allGems[x, 0]);
-            }
         }
+        bottomGems = bottomGems.Distinct().ToList();
     }
 
 }

@@ -153,6 +153,7 @@ MonoBehaviour:
   bgTilePrefab: {fileID: 8642536961268037462, guid: 1b097e7b104b0e3459022b264f42da50, type: 3}
   bgTiles: []
   bgTilesTransform: []
+  shootingGems: []
 --- !u!4 &274700256
 Transform:
   m_ObjectHideFlags: 0
@@ -475,8 +476,8 @@ MonoBehaviour:
   bgTilePrefab: {fileID: 8642536961268037462, guid: 1b097e7b104b0e3459022b264f42da50, type: 3}
   board: {fileID: 0}
   gems:
-  - {fileID: 2519210119460255655, guid: c30d8de066bf2214f984baedb52ce8a1, type: 3}
-  - {fileID: 5717958041733864928, guid: f527bef37031bbf4d83605b1589cb0b8, type: 3}
+  - {fileID: -7688797963228580029, guid: 336e721b66ca6f04882f471cc3ea2b8e, type: 3}
+  - {fileID: 1885742063640403380, guid: 746be27525525ab47824bf4c6c9ac4d8, type: 3}
   interactGems: []
 --- !u!4 &1554356567
 Transform:

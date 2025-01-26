@@ -30,18 +30,6 @@ public class Gem : MonoBehaviour
         board = theboard;
     }
     
-    public void SetupGem(Vector2Int pos, InteractBoard theboard)
-    {
-        posIndex = pos;
-        interactBoard = theboard;
-    }
-
     
-    private void OnMouseDown()
-    {
-        if (gameObject.layer == 6)
-        {
-            mousePressed = true;
-        }
-    }
+
 }
