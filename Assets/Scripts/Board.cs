@@ -8,8 +8,12 @@ using Random = UnityEngine.Random;
 public enum GemPattern
 {
     SplitHalf,   // Left half one color, right half another color
-    StarShape,   // Star shape pattern (you can customize this)
-    StripedRows   
+    StripedRows ,
+    DiagonalStripes,
+    TwoGemCheckerboard,
+    ThreeGemTriangles,
+    FourGemQuadrants,
+    FiveGemSpiral
 }
 
 
@@ -50,7 +54,8 @@ public class Board : MonoBehaviour
                 SpawnGem(new Vector2Int(i, j), gems[gemToUse]);
             }
         }
-
+       // Camera.main.transform.position = new Vector3(width / 2f, height / 2f, Camera.main.transform.position.z);
+        
         UpdateBottomGemsList();
     }
 
@@ -64,20 +69,49 @@ public class Board : MonoBehaviour
                     return Random.Range(0, gems.Length / 2); // First half
                 else
                     return Random.Range(gems.Length / 2, gems.Length); // Second half
-
-            case GemPattern.StarShape:
-                // Star shape pattern (e.g. gems near the center form a star)
-                if (Mathf.Abs(i - width / 2) + Mathf.Abs(j - height / 2) <= 3)  // Simple star-like logic
-                    return Random.Range(0, gems.Length);  // Central area gets random gems
-                else
-                    return Random.Range(gems.Length / 2, gems.Length);  // Outer area gets different gems
             
             case GemPattern.StripedRows :
-                if (i % 2 == 0)
-                    return Random.Range(0, gems.Length / 2); // Even rows
-                else
+               //logic for stripe rows
+               if (j % 2 == 0) // Even rows
+                   return Random.Range(0, gems.Length / 2); 
+               else // Odd rows
+                   return Random.Range(gems.Length / 2, gems.Length); 
+            case GemPattern.DiagonalStripes:
+                // Diagonal Stripes
+                if ((i + j) % 2 == 0) // Even diagonals
+                    return Random.Range(0, gems.Length / 2);
+                else // Odd diagonals
                     return Random.Range(gems.Length / 2, gems.Length); 
+            case GemPattern.FourGemQuadrants:
+                // Divide the board into four quadrants
+                if (i < width / 2 && j < height / 2) // Top-Left quadrant
+                    return 0; 
+                else if (i >= width / 2 && j < height / 2) // Top-Right quadrant
+                    return 1;
+                else if (i < width / 2 && j >= height / 2) // Bottom-Left quadrant
+                    return 2;
+                else // Bottom-Right quadrant
+                    return 3;
+            case GemPattern.ThreeGemTriangles:
+                // Divide the board into three triangles
+                if (j >= i) // Top-Left and Middle Triangle
+                    return 0;
+                else if (j < i && j >= -i + width) // Top-Right and Middle Triangle
+                    return 1;
+                else // Bottom Triangle
+                    return 2;
+            case GemPattern.TwoGemCheckerboard:
+                // Simple Checkerboard with two gems
+                if ((i + j) % 2 == 0) 
+                    return 0; // First gem type
+                else
+                    return 1; // Second gem type
+            case GemPattern.FiveGemSpiral:
+                // Create a spiral pattern with five gem types
+                int distanceFromCenter = Mathf.RoundToInt(Mathf.Sqrt(Mathf.Pow(i - width / 2, 2) + Mathf.Pow(j - height / 2, 2)));
+                return distanceFromCenter % 5; // Cycle through five gem types
 
+            
             default:
                 return Random.Range(0, gems.Length); // Default to random if no pattern is selected
         }

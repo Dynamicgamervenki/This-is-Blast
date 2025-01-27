@@ -38,7 +38,7 @@ public class InteractBoard : MonoBehaviour
                 GameObject bgTile = Instantiate(bgTilePrefab, position, Quaternion.identity);
                 bgTile.transform.SetParent(transform);
                 bgTile.name = "BgTile - " + i + "," + j;
-                
+
                 InteractGems gem = Instantiate(gems[i], position, Quaternion.identity);
                 gem.transform.SetParent(transform);
                 gem.name = "Gem - " + i + "," + j;
@@ -53,8 +53,27 @@ public class InteractBoard : MonoBehaviour
     private void Update()
     {
         Check();
+        if (IsBoardEmpty(board))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
 
+    }
 
+    private bool IsBoardEmpty(Board board)
+    {
+        for (int i = 0; i < board.width; i++)
+        {
+            for (int j = 0; j < board.height; j++)
+            {
+                if (board.allGems[i, j] != null)
+                {
+                    return false; // Not empty if a gem is found
+                }
+            }
+        }
+
+        return true; // Empty if no gems are found on the board
     }
 
     public void Check()
@@ -72,6 +91,7 @@ public class InteractBoard : MonoBehaviour
                         StartCoroutine(MoveToBoard(iGem, bGem));
                         break;
                     }
+
                 }
 
                 StartCoroutine(board.DecreaseRowCo());
@@ -79,78 +99,90 @@ public class InteractBoard : MonoBehaviour
         }
     }
 
-private IEnumerator MoveToBoard(InteractGems iGem, Gem bGem)
-{
-    // Ensure the gem moves to the target position
-    Vector3 targetPos = iGem.pos.position;
-    float journeyLength = Vector3.Distance(iGem.transform.position, targetPos);
-    float startTime = Time.time;
-    
-    // Smoothly move iGem to target position over time
-    while (Vector3.Distance(iGem.transform.position, targetPos) > 0.1f)
+    private IEnumerator MoveToBoard(InteractGems iGem, Gem bGem)
     {
-        float distanceCovered = (Time.time - startTime) * iGem.shootSpeed;
-        float fractionOfJourney = distanceCovered / journeyLength;
-    
-        // Move the gem smoothly using Lerp
-        iGem.transform.position = Vector3.Lerp(iGem.transform.position, targetPos, fractionOfJourney);
-    
-        yield return null; // Wait for the next frame
+        // Ensure the gem moves to the target position
+        Vector3 targetPos = iGem.pos.position;
+        float journeyLength = Vector3.Distance(iGem.transform.position, targetPos);
+        float startTime = Time.time;
+
+        // Smoothly move iGem to target position over time
+        while (Vector3.Distance(iGem.transform.position, targetPos) > 0.1f)
+        {
+            float distanceCovered = (Time.time - startTime) * iGem.shootSpeed;
+            float fractionOfJourney = distanceCovered / journeyLength;
+
+            // Move the gem smoothly using Lerp
+            iGem.transform.position = Vector3.Lerp(iGem.transform.position, targetPos, fractionOfJourney);
+
+            yield return null; // Wait for the next frame
+        }
+
+        // Ensure the final position is exactly the target position
+        iGem.transform.position = targetPos;
+
+        // Instantiate a bullet at the gem's position
+        GameObject bullet = Instantiate(BulletPrefab, iGem.transform.position, Quaternion.identity);
+
+        // **Trigger vibration when the bullet is fired**
+        TriggerVibration();
+
+        // Move the bullet towards the target gem
+        while (bGem != null && Vector3.Distance(bullet.transform.position, bGem.transform.position) > 0.1f)
+        {
+            // Smoothly move the bullet towards the gem
+            bullet.transform.position = Vector3.MoveTowards(
+                bullet.transform.position,
+                bGem.transform.position,
+                iGem.shootSpeed * Time.deltaTime
+            );
+
+            yield return null; // Wait for the next frame
+        }
+
+        // Align the bullet with the target gem's position, if it still exists
+        if (bGem != null)
+        {
+            bullet.transform.position = bGem.transform.position;
+
+            yield return new WaitForSeconds(0.1f);
+
+            // **Trigger vibration when the gem is hit**
+            TriggerVibration();
+
+            Destroy(bGem.gameObject); // Destroy the target gem
+
+            // Increment the bGemDestoryed count
+            iGem.bGemDestoryed++;
+            Debug.Log("Destroyed " + bGem?.name + " | Current Count: " + iGem.bGemDestoryed);
+        }
+
+        // Destroy the bullet after the gem is destroyed
+        Destroy(bullet);
+
+        // Call the method to decrease the temporary shootId for the UI update
+        iGem.DecreaseTempShootId();
+
+        // Check if the gem has reached its destruction limit
+        if (iGem.bGemDestoryed == iGem.shootId)
+        {
+            Debug.Log(iGem.name + " has reached its destruction limit.");
+            interactGems.Remove(iGem); // Remove it from the list
+            Destroy(iGem.gameObject); // Destroy the gem
+        }
+        else
+        {
+            // Reset the isMoving flag if the gem is still active
+            iGem.isMoving = false;
+        }
     }
 
-    // Ensure the final position is exactly the target position
-    iGem.transform.position = targetPos;
-
-    // Instantiate a bullet at the gem's position
-    GameObject bullet = Instantiate(BulletPrefab, iGem.transform.position, Quaternion.identity);
-
-    // Move the bullet towards the target gem
-    while (bGem != null && Vector3.Distance(bullet.transform.position, bGem.transform.position) > 0.1f)
+// Vibration or Haptic Feedback Method
+    private void TriggerVibration()
     {
-        // Smoothly move the bullet towards the gem
-        bullet.transform.position = Vector3.MoveTowards(
-            bullet.transform.position,
-            bGem.transform.position,
-            iGem.shootSpeed * Time.deltaTime
-        );
-
-        yield return null; // Wait for the next frame
-    }
-
-    // Align the bullet with the target gem's position, if it still exists
-    if (bGem != null)
-    {
-        bullet.transform.position = bGem.transform.position;
-        
-        yield return new WaitForSeconds(0.1f);
-        Destroy(bGem.gameObject); // Destroy the target gem
-
-        // Increment the bGemDestoryed count
-        iGem.bGemDestoryed++;
-        Debug.Log("Destroyed " + bGem?.name + " | Current Count: " + iGem.bGemDestoryed);
-    }
-
-    // Destroy the bullet after the gem is destroyed
-    Destroy(bullet);
-
-    // Call the method to decrease the temporary shootId for the UI update
-    iGem.DecreaseTempShootId();
-
-    // Check if the gem has reached its destruction limit
-    if (iGem.bGemDestoryed == iGem.shootId)
-    {
-        Debug.Log(iGem.name + " has reached its destruction limit.");
-        interactGems.Remove(iGem); // Remove it from the list
-        Destroy(iGem.gameObject); // Destroy the gem
-    }
-    else
-    {
-        // Reset the isMoving flag if the gem is still active
-        iGem.isMoving = false;
+        #if UNITY_ANDROID || UNITY_IOS
+            Handheld.Vibrate();
+        #endif
     }
 }
 
-
-
-
-}

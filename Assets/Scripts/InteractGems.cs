@@ -34,8 +34,8 @@ public class InteractGems : MonoBehaviour
         textField.text = shootId.ToString();
 
         // Customize text appearance (optional)
-        textField.fontSize = 10;
-        textField.color = Color.white;
+        textField.fontSize = 6;
+        textField.color = Color.black;
         textField.alignment = TextAlignmentOptions.Center;
 
         // Initialize the temporary shootId with the original shootId
