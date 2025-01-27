@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mousePressed: 0
-  shootId: 18
+  shootId: 1
   bGemDestoryed: 0
   pos: {fileID: 0}
   type: 4

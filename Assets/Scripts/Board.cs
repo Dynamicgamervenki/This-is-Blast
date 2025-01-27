@@ -161,6 +161,7 @@ public class Board : MonoBehaviour
     }
     
     
+    
     public void UpdateBottomGemsList()
     {
         //bottomGems.Clear();

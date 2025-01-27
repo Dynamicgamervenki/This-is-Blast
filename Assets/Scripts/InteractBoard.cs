@@ -28,27 +28,68 @@ public class InteractBoard : MonoBehaviour
         SetUp();
     }
 
-    private void SetUp()
-    {
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < height; j++)
-            {
-                Vector3 position = transform.position + new Vector3(i, j, 0);
-                GameObject bgTile = Instantiate(bgTilePrefab, position, Quaternion.identity);
-                bgTile.transform.SetParent(transform);
-                bgTile.name = "BgTile - " + i + "," + j;
+private void SetUp()
+{
+    // Create a list to track available gems and available positions for unique placement
+    List<InteractGems> availableGems = new List<InteractGems>(gems);
+    List<Transform> availablePositions = new List<Transform>(moveBoard.bgTilesTransform);
 
-                InteractGems gem = Instantiate(gems[i], position, Quaternion.identity);
-                gem.transform.SetParent(transform);
-                gem.name = "Gem - " + i + "," + j;
-                gem.gameObject.layer = 6;
-                gem.pos = moveBoard.bgTilesTransform[i];
-                gem.isMoving = false; // Initialize isMoving for each gem
-                interactGems.Add(gem);
+    for (int i = 0; i < width; i++)
+    {
+        for (int j = 0; j < height; j++)
+        {
+            Vector3 position = transform.position + new Vector3(i, j, 0);
+            GameObject bgTile = Instantiate(bgTilePrefab, position, Quaternion.identity);
+            bgTile.transform.SetParent(transform);
+            bgTile.name = "BgTile - " + i + "," + j;
+
+            // Pick a unique gem
+            InteractGems selectedGem;
+            if (availableGems.Count > 0)
+            {
+                int randomIndex = Random.Range(0, availableGems.Count);
+                selectedGem = availableGems[randomIndex];
+                availableGems.RemoveAt(randomIndex); // Remove the selected gem to ensure uniqueness
             }
+            else
+            {
+                // If all gems have been used once, reset the list to allow duplicates
+                availableGems = new List<InteractGems>(gems);
+                int randomIndex = Random.Range(0, availableGems.Count);
+                selectedGem = availableGems[randomIndex];
+                availableGems.RemoveAt(randomIndex);
+            }
+
+            // Pick a unique position
+            Transform selectedPos;
+            if (availablePositions.Count > 0)
+            {
+                int randomIndex = Random.Range(0, availablePositions.Count);
+                selectedPos = availablePositions[randomIndex];
+                availablePositions.RemoveAt(randomIndex); // Remove the selected position to ensure uniqueness
+            }
+            else
+            {
+                // If all positions have been used once, reset the list to allow duplicates
+                availablePositions = new List<Transform>(moveBoard.bgTilesTransform);
+                int randomIndex = Random.Range(0, availablePositions.Count);
+                selectedPos = availablePositions[randomIndex];
+                availablePositions.RemoveAt(randomIndex);
+            }
+
+            // Instantiate the gem and assign the position
+            InteractGems gem = Instantiate(selectedGem, position, Quaternion.identity);
+            gem.transform.SetParent(transform);
+            gem.name = "Gem - " + i + "," + j;
+            gem.gameObject.layer = 6;
+            gem.pos = selectedPos;  // Assign the unique position
+            gem.isMoving = false; // Initialize isMoving for each gem
+            interactGems.Add(gem);
         }
     }
+}
+
+
 
     private void Update()
     {

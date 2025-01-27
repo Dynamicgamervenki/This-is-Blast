@@ -9,7 +9,8 @@ public class ToMoveBoard : MonoBehaviour
     public GameObject bgTilePrefab;
     public GameObject[] bgTiles;
     public List<Transform> bgTilesTransform;
-
+    
+    
     private void Start()
     {
         SetUp();

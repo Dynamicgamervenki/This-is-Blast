@@ -30,10 +30,10 @@ public class InteractGems : MonoBehaviour
         // Add the TextMeshPro component to the object
         textField = textObject.AddComponent<TextMeshPro>();
 
-        // Set the text to show the shootId
+        //  text to show the shootId
         textField.text = shootId.ToString();
 
-        // Customize text appearance (optional)
+        //  text appearance (optional)
         textField.fontSize = 6;
         textField.color = Color.black;
         textField.alignment = TextAlignmentOptions.Center;
