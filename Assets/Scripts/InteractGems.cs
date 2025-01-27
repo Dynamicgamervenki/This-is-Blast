@@ -13,38 +13,52 @@ public class InteractGems : MonoBehaviour
     public bool isMoving;
 
     public float shootSpeed = 20f;
-
-    // TextMeshPro reference to display the shootId
+    
     public TextMeshPro textField;
     
-    // Temporary shootId for UI updates
+
     private int tempShootId;
+    
 
     private void Start()
     {
         // Create a new TextMeshPro object dynamically
         GameObject textObject = new GameObject("ShootIdText");
-        textObject.transform.SetParent(transform);  // Make sure the text is a child of the gem
-        textObject.transform.localPosition = Vector3.zero;  // Position it at the center of the gem (relative to the gem)
+        textObject.transform.SetParent(transform);  
+        textObject.transform.localPosition = Vector3.zero;  
 
-        // Add the TextMeshPro component to the object
+
         textField = textObject.AddComponent<TextMeshPro>();
-
         textField.autoSizeTextContainer = true;
         textField.sortingOrder = 10;
-        
-        //  text to show the shootId
         textField.text = shootId.ToString();
 
-        //  text appearance (optional)
         textField.fontSize = 6;
         textField.color = Color.black;
         textField.alignment = TextAlignmentOptions.Center;
-
-        // Initialize the temporary shootId with the original shootId
+        
         tempShootId = shootId;
     }
-
+    
+    public int GetShootIdBasedOnType(IGemType gemType,GemData gemData)
+    {
+        switch (gemType)
+        {
+            case IGemType.blue:
+                return gemData.blueShootId;
+            case IGemType.green:
+                return gemData.greenShootId;
+            case IGemType.red:
+                return gemData.redShootId;
+            case IGemType.yellow:
+                return gemData.yellowShootId;
+            case IGemType.purple:
+                return gemData.purpleShootId;
+            default:
+                return 0; 
+        }
+    }
+    
     private void OnMouseDown()
     {
         mousePressed = true;
@@ -53,11 +67,11 @@ public class InteractGems : MonoBehaviour
     private void Update()
     {
         // Handle touch input for Android
-        if (Input.touchCount > 0) // Check if there is at least one touch
+        if (Input.touchCount > 0) 
         {
-            Touch touch = Input.GetTouch(0); // Get the first touch
+            Touch touch = Input.GetTouch(0); 
 
-            if (touch.phase == TouchPhase.Began) // Touch started
+            if (touch.phase == TouchPhase.Began) 
             {
                 OnTouchDown(touch);
             }
@@ -70,9 +84,9 @@ public class InteractGems : MonoBehaviour
         Vector3 touchPosition = Camera.main.ScreenToWorldPoint(new Vector3(touch.position.x, touch.position.y, Camera.main.nearClipPlane));
         RaycastHit2D hit = Physics2D.Raycast(touchPosition, Vector2.zero);
 
-        if (hit.collider != null && hit.collider.gameObject == gameObject) // Check if this object was touched
+        if (hit.collider != null && hit.collider.gameObject == gameObject) 
         {
-            mousePressed = true; // Perform the same action as OnMouseDown
+            mousePressed = true; 
         }
     }
 
@@ -86,7 +100,7 @@ public class InteractGems : MonoBehaviour
         }
     }
 
-    // Call this function to decrease the temporary shootId when a gem is destroyed
+    //  function to decrease the temporary shootId when a gem is destroyed
     public void DecreaseTempShootId()
     {
         // Only decrease if the temporary shootId is greater than 0

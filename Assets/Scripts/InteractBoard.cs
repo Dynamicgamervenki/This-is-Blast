@@ -16,6 +16,8 @@ public class InteractBoard : MonoBehaviour
     public InteractGems[] gems;
     public List<InteractGems> interactGems = new List<InteractGems>();
     private ToMoveBoard moveBoard;
+    
+    public GemData gemData; 
 
     private void Awake()
     {
@@ -30,7 +32,7 @@ public class InteractBoard : MonoBehaviour
 
 private void SetUp()
 {
-    // Create a list to track available gems and available positions for unique placement
+
     List<InteractGems> availableGems = new List<InteractGems>(gems);
     List<Transform> availablePositions = new List<Transform>(moveBoard.bgTilesTransform);
 
@@ -43,51 +45,54 @@ private void SetUp()
             bgTile.transform.SetParent(transform);
             bgTile.name = "BgTile - " + i + "," + j;
 
-            // Pick a unique gem
+ 
             InteractGems selectedGem;
             if (availableGems.Count > 0)
             {
                 int randomIndex = Random.Range(0, availableGems.Count);
                 selectedGem = availableGems[randomIndex];
-                availableGems.RemoveAt(randomIndex); // Remove the selected gem to ensure uniqueness
+                availableGems.RemoveAt(randomIndex); 
             }
             else
             {
-                // If all gems have been used once, reset the list to allow duplicates
+
                 availableGems = new List<InteractGems>(gems);
                 int randomIndex = Random.Range(0, availableGems.Count);
                 selectedGem = availableGems[randomIndex];
                 availableGems.RemoveAt(randomIndex);
             }
 
-            // Pick a unique position
+
             Transform selectedPos;
             if (availablePositions.Count > 0)
             {
                 int randomIndex = Random.Range(0, availablePositions.Count);
                 selectedPos = availablePositions[randomIndex];
-                availablePositions.RemoveAt(randomIndex); // Remove the selected position to ensure uniqueness
+                availablePositions.RemoveAt(randomIndex); 
             }
             else
             {
-                // If all positions have been used once, reset the list to allow duplicates
                 availablePositions = new List<Transform>(moveBoard.bgTilesTransform);
                 int randomIndex = Random.Range(0, availablePositions.Count);
                 selectedPos = availablePositions[randomIndex];
                 availablePositions.RemoveAt(randomIndex);
             }
 
-            // Instantiate the gem and assign the position
+
             InteractGems gem = Instantiate(selectedGem, position, Quaternion.identity);
             gem.transform.SetParent(transform);
             gem.name = "Gem - " + i + "," + j;
             gem.gameObject.layer = 6;
-            gem.pos = selectedPos;  // Assign the unique position
-            gem.isMoving = false; // Initialize isMoving for each gem
+            gem.pos = selectedPos;  
+            gem.isMoving = false; 
+            gem.shootId = gem.GetShootIdBasedOnType(gem.type, gemData);
             interactGems.Add(gem);
         }
     }
 }
+
+
+
 
 
 
@@ -96,7 +101,8 @@ private void SetUp()
         Check();
         if (IsBoardEmpty(board))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            int index = SceneManager.GetActiveScene().buildIndex + 1;
+            SceneManager.LoadScene(index);
         }
 
     }
@@ -109,19 +115,18 @@ private void SetUp()
             {
                 if (board.allGems[i, j] != null)
                 {
-                    return false; // Not empty if a gem is found
+                    return false; 
                 }
             }
         }
 
-        return true; // Empty if no gems are found on the board
+        return true; 
     }
 
     public void Check()
     {
         foreach (InteractGems iGem in interactGems)
         {
-            // Check if the gem is pressed, not moving, and has not reached its shoot limit
             if (iGem.mousePressed && !iGem.isMoving)
             {
                 foreach (Gem bGem in board.bottomGems)
@@ -142,30 +147,28 @@ private void SetUp()
 
     private IEnumerator MoveToBoard(InteractGems iGem, Gem bGem)
     {
-        // Ensure the gem moves to the target position
         Vector3 targetPos = iGem.pos.position;
         float journeyLength = Vector3.Distance(iGem.transform.position, targetPos);
         float startTime = Time.time;
 
-        // Smoothly move iGem to target position over time
+ 
         while (Vector3.Distance(iGem.transform.position, targetPos) > 0.1f)
         {
             float distanceCovered = (Time.time - startTime) * iGem.shootSpeed;
             float fractionOfJourney = distanceCovered / journeyLength;
 
-            // Move the gem smoothly using Lerp
+
             iGem.transform.position = Vector3.Lerp(iGem.transform.position, targetPos, fractionOfJourney);
 
-            yield return null; // Wait for the next frame
+            yield return null; 
         }
-
-        // Ensure the final position is exactly the target position
+        
         iGem.transform.position = targetPos;
 
-        // Instantiate a bullet at the gem's position
+
         GameObject bullet = Instantiate(BulletPrefab, iGem.transform.position, Quaternion.identity);
 
-        // **Trigger vibration when the bullet is fired**
+
         TriggerVibration();
 
         // Move the bullet towards the target gem
@@ -188,37 +191,32 @@ private void SetUp()
 
             yield return new WaitForSeconds(0.1f);
 
-            // **Trigger vibration when the gem is hit**
-            TriggerVibration();
-
-            Destroy(bGem.gameObject); // Destroy the target gem
-
-            // Increment the bGemDestoryed count
+            Destroy(bGem.gameObject); 
+            
             iGem.bGemDestoryed++;
             Debug.Log("Destroyed " + bGem?.name + " | Current Count: " + iGem.bGemDestoryed);
         }
 
-        // Destroy the bullet after the gem is destroyed
+    
         Destroy(bullet);
-
-        // Call the method to decrease the temporary shootId for the UI update
+        
         iGem.DecreaseTempShootId();
 
-        // Check if the gem has reached its destruction limit
+     
         if (iGem.bGemDestoryed == iGem.shootId)
         {
             Debug.Log(iGem.name + " has reached its destruction limit.");
-            interactGems.Remove(iGem); // Remove it from the list
-            Destroy(iGem.gameObject); // Destroy the gem
+            interactGems.Remove(iGem); 
+            Destroy(iGem.gameObject); 
         }
         else
         {
-            // Reset the isMoving flag if the gem is still active
+  
             iGem.isMoving = false;
         }
     }
 
-// Vibration or Haptic Feedback Method
+
     private void TriggerVibration()
     {
         #if UNITY_ANDROID || UNITY_IOS

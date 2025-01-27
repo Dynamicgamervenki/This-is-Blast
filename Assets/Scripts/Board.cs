@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 public enum GemPattern
 {
-    SplitHalf,   // Left half one color, right half another color
+    SplitHalf,   
     StripedRows ,
     DiagonalStripes,
     TwoGemCheckerboard,
@@ -54,8 +54,7 @@ public class Board : MonoBehaviour
                 SpawnGem(new Vector2Int(i, j), gems[gemToUse]);
             }
         }
-       // Camera.main.transform.position = new Vector3(width / 2f, height / 2f, Camera.main.transform.position.z);
-        
+
         UpdateBottomGemsList();
     }
 
@@ -64,56 +63,49 @@ public class Board : MonoBehaviour
         switch (gemPattern)
         {
             case GemPattern.SplitHalf:
-                // Left half one color, right half another color
                 if (i < width / 2)
-                    return Random.Range(0, gems.Length / 2); // First half
+                    return Random.Range(0, gems.Length / 2); 
                 else
-                    return Random.Range(gems.Length / 2, gems.Length); // Second half
+                    return Random.Range(gems.Length / 2, gems.Length); 
             
             case GemPattern.StripedRows :
-               //logic for stripe rows
-               if (j % 2 == 0) // Even rows
+               if (j % 2 == 0) 
                    return Random.Range(0, gems.Length / 2); 
-               else // Odd rows
+               else 
                    return Random.Range(gems.Length / 2, gems.Length); 
             case GemPattern.DiagonalStripes:
-                // Diagonal Stripes
-                if ((i + j) % 2 == 0) // Even diagonals
+                if ((i + j) % 2 == 0) 
                     return Random.Range(0, gems.Length / 2);
-                else // Odd diagonals
+                else 
                     return Random.Range(gems.Length / 2, gems.Length); 
             case GemPattern.FourGemQuadrants:
-                // Divide the board into four quadrants
-                if (i < width / 2 && j < height / 2) // Top-Left quadrant
+                if (i < width / 2 && j < height / 2) 
                     return 0; 
-                else if (i >= width / 2 && j < height / 2) // Top-Right quadrant
+                else if (i >= width / 2 && j < height / 2) 
                     return 1;
-                else if (i < width / 2 && j >= height / 2) // Bottom-Left quadrant
+                else if (i < width / 2 && j >= height / 2) 
                     return 2;
-                else // Bottom-Right quadrant
+                else 
                     return 3;
             case GemPattern.ThreeGemTriangles:
-                // Divide the board into three triangles
-                if (j >= i) // Top-Left and Middle Triangle
+                if (j >= i) 
                     return 0;
-                else if (j < i && j >= -i + width) // Top-Right and Middle Triangle
+                else if (j < i && j >= -i + width) 
                     return 1;
-                else // Bottom Triangle
+                else 
                     return 2;
             case GemPattern.TwoGemCheckerboard:
-                // Simple Checkerboard with two gems
                 if ((i + j) % 2 == 0) 
-                    return 0; // First gem type
+                    return 0; 
                 else
-                    return 1; // Second gem type
+                    return 1; 
             case GemPattern.FiveGemSpiral:
-                // Create a spiral pattern with five gem types
                 int distanceFromCenter = Mathf.RoundToInt(Mathf.Sqrt(Mathf.Pow(i - width / 2, 2) + Mathf.Pow(j - height / 2, 2)));
-                return distanceFromCenter % 5; // Cycle through five gem types
+                return distanceFromCenter % 5; 
 
             
             default:
-                return Random.Range(0, gems.Length); // Default to random if no pattern is selected
+                return Random.Range(0, gems.Length); 
         }
     }
     
@@ -164,8 +156,6 @@ public class Board : MonoBehaviour
     
     public void UpdateBottomGemsList()
     {
-        //bottomGems.Clear();
-        // Add gems from the bottom row (y = 0)
         for (int x = 0; x < width; x++)
         {
                 bottomGems.Add(allGems[x, 0]);

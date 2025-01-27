@@ -876,6 +876,7 @@ MonoBehaviour:
   - {fileID: -7688797963228580029, guid: 336e721b66ca6f04882f471cc3ea2b8e, type: 3}
   - {fileID: -7688797963228580029, guid: 8036a9780a613334c82308a335af2802, type: 3}
   interactGems: []
+  gemData: {fileID: 11400000, guid: 796104c6c5a9ff34aa0dd15de12b4a8d, type: 2}
 --- !u!4 &1554356567
 Transform:
   m_ObjectHideFlags: 0

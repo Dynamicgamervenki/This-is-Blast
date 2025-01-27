@@ -563,7 +563,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   width: 6
-  height: 6
+  height: 9
   gemPattern: 3
   gemSpeed: 10
   bgTilePrefab: {fileID: 8642536961268037462, guid: 1b097e7b104b0e3459022b264f42da50, type: 3}
@@ -726,6 +726,7 @@ MonoBehaviour:
   - {fileID: -7688797963228580029, guid: fe5917be3f8cd624eb07353af66780f8, type: 3}
   - {fileID: -7688797963228580029, guid: 8036a9780a613334c82308a335af2802, type: 3}
   interactGems: []
+  gemData: {fileID: 11400000, guid: 2fd728ee23671a748aad62c97a0a3b68, type: 2}
 --- !u!4 &1554356567
 Transform:
   m_ObjectHideFlags: 0
