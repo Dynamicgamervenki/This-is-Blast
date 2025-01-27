@@ -72,16 +72,11 @@ public class Board : MonoBehaviour
                 else
                     return Random.Range(gems.Length / 2, gems.Length);  // Outer area gets different gems
             
-            case GemPattern.StripedRows:
-                // Alternate colors based on row index, considering width
-                int rowBlock = i / 2; // Divide the width into blocks of two columns
-
-                // Alternate color sets for each row (alternating between two colors)
-                if (rowBlock % 2 == 0)
-                    return Random.Range(0, gems.Length / 2);  // First color set (left half)
+            case GemPattern.StripedRows :
+                if (i % 2 == 0)
+                    return Random.Range(0, gems.Length / 2); // Even rows
                 else
-                    return Random.Range(gems.Length / 2, gems.Length);  // Second color set (right half)
-
+                    return Random.Range(gems.Length / 2, gems.Length); 
 
             default:
                 return Random.Range(0, gems.Length); // Default to random if no pattern is selected

@@ -148,12 +148,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1113c19256a80e74c87076c4a532f2e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 4
+  width: 3
   height: 1
   bgTilePrefab: {fileID: 8642536961268037462, guid: 1b097e7b104b0e3459022b264f42da50, type: 3}
   bgTiles: []
   bgTilesTransform: []
-  shootingGems: []
 --- !u!4 &274700256
 Transform:
   m_ObjectHideFlags: 0
@@ -163,7 +162,7 @@ Transform:
   m_GameObject: {fileID: 274700254}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.4879984, y: -2.49, z: -0.05585045}
+  m_LocalPosition: {x: 1.5879984, y: -1.76, z: -0.05585045}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -250,7 +249,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.1978462, g: 0.21629384, b: 0.24528301, a: 0}
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -275,7 +274,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 7
+  orthographic size: 6.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -300,7 +299,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.27, y: 0.5, z: -10}
+  m_LocalPosition: {x: 2.48, y: 0.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -421,13 +420,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 6
   height: 6
-  gemPattern: 2
-  gemSpeed: 5
+  gemPattern: 1
+  gemSpeed: 10
   bgTilePrefab: {fileID: 8642536961268037462, guid: 1b097e7b104b0e3459022b264f42da50, type: 3}
   gems:
-  - {fileID: 2519210119460255655, guid: c30d8de066bf2214f984baedb52ce8a1, type: 3}
-  - {fileID: 5717958041733864928, guid: f527bef37031bbf4d83605b1589cb0b8, type: 3}
   - {fileID: -6260688816352024967, guid: 0d9eafc8d3435de47b23676faf77571a, type: 3}
+  - {fileID: 5717958041733864928, guid: f527bef37031bbf4d83605b1589cb0b8, type: 3}
+  - {fileID: 2519210119460255655, guid: c30d8de066bf2214f984baedb52ce8a1, type: 3}
   bottomGems: []
   DesroyeedGems: []
 --- !u!4 &803379349
@@ -474,15 +473,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bca872d25f6d7434f86e399f000d9fd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 4
+  width: 3
   height: 1
   bgTilePrefab: {fileID: 8642536961268037462, guid: 1b097e7b104b0e3459022b264f42da50, type: 3}
   BulletPrefab: {fileID: 2857302408049066035, guid: ae4b49b7576c2734db7f610281e815a9, type: 3}
   gems:
-  - {fileID: -7688797963228580029, guid: 336e721b66ca6f04882f471cc3ea2b8e, type: 3}
-  - {fileID: 1885742063640403380, guid: 746be27525525ab47824bf4c6c9ac4d8, type: 3}
   - {fileID: -7688797963228580029, guid: fe5917be3f8cd624eb07353af66780f8, type: 3}
   - {fileID: -7688797963228580029, guid: 336e721b66ca6f04882f471cc3ea2b8e, type: 3}
+  - {fileID: 1885742063640403380, guid: 746be27525525ab47824bf4c6c9ac4d8, type: 3}
   interactGems: []
 --- !u!4 &1554356567
 Transform:
@@ -493,7 +491,75 @@ Transform:
   m_GameObject: {fileID: 1554356565}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.55, y: -4.33, z: 0}
+  m_LocalPosition: {x: 1.65, y: -3.6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1964827263
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1964827266}
+  - component: {fileID: 1964827265}
+  - component: {fileID: 1964827264}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1964827264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1964827263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+--- !u!114 &1964827265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1964827263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!4 &1964827266
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1964827263}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -508,3 +574,4 @@ SceneRoots:
   - {fileID: 803379349}
   - {fileID: 1554356567}
   - {fileID: 274700256}
+  - {fileID: 1964827266}

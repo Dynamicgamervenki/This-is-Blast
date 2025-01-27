@@ -10,7 +10,6 @@ public class ToMoveBoard : MonoBehaviour
     public GameObject[] bgTiles;
     public List<Transform> bgTilesTransform;
 
-    public List<InteractGems> shootingGems;
     private void Start()
     {
         SetUp();
