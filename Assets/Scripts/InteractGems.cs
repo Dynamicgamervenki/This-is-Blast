@@ -30,6 +30,9 @@ public class InteractGems : MonoBehaviour
         // Add the TextMeshPro component to the object
         textField = textObject.AddComponent<TextMeshPro>();
 
+        textField.autoSizeTextContainer = true;
+        textField.sortingOrder = 10;
+        
         //  text to show the shootId
         textField.text = shootId.ToString();
 

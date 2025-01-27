@@ -107,7 +107,7 @@ MonoBehaviour:
   pos: {fileID: 0}
   type: 0
   isMoving: 0
-  shootSpeed: 50
+  shootSpeed: 40
   textField: {fileID: 0}
 --- !u!61 &3292079241082147307
 BoxCollider2D:
