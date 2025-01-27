@@ -123,19 +123,22 @@ public class InteractBoard : MonoBehaviour
             // Wait briefly before destroying the gem and bullet
             yield return new WaitForSeconds(0.1f);
             Destroy(bGem.gameObject); // Destroy the target gem
+
+            // Increment the bGemDestoryed count
+            iGem.bGemDestoryed++;
+            Debug.Log("Destroyed " + bGem?.name + " | Current Count: " + iGem.bGemDestoryed);
         }
 
         // Destroy the bullet after the gem is destroyed
         Destroy(bullet);
 
-        // Update the gem's destruction count
-        iGem.bGemDestoryed++;
-        Debug.Log("Destroyed " + bGem?.name + " | Current Count: " + iGem.bGemDestoryed);
+        // Call the method to decrease the temporary shootId for the UI update
+        iGem.DecreaseTempShootId();
 
-        // Check if the gem has reached its shooting limit
-        if (iGem.bGemDestoryed >= iGem.shootId)
+        // Check if the gem has reached its destruction limit
+        if (iGem.bGemDestoryed == iGem.shootId)
         {
-            Debug.Log(iGem.name + " has reached its shooting limit.");
+            Debug.Log(iGem.name + " has reached its destruction limit.");
 
             // Deactivate or destroy the gem
             interactGems.Remove(iGem); // Remove it from the list
@@ -147,4 +150,7 @@ public class InteractBoard : MonoBehaviour
             iGem.isMoving = false;
         }
     }
+
+
+
 }

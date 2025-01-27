@@ -16,6 +16,9 @@ public class InteractGems : MonoBehaviour
 
     // TextMeshPro reference to display the shootId
     public TextMeshPro textField;
+    
+    // Temporary shootId for UI updates
+    private int tempShootId;
 
     private void Start()
     {
@@ -34,6 +37,9 @@ public class InteractGems : MonoBehaviour
         textField.fontSize = 10;
         textField.color = Color.white;
         textField.alignment = TextAlignmentOptions.Center;
+
+        // Initialize the temporary shootId with the original shootId
+        tempShootId = shootId;
     }
 
     private void OnMouseDown()
@@ -72,7 +78,19 @@ public class InteractGems : MonoBehaviour
     {
         if (textField != null)
         {
-            textField.text = shootId.ToString();
+            // Update the UI text with the temporary shootId
+            textField.text = tempShootId.ToString();
         }
+    }
+
+    // Call this function to decrease the temporary shootId when a gem is destroyed
+    public void DecreaseTempShootId()
+    {
+        // Only decrease if the temporary shootId is greater than 0
+        if (tempShootId > 0)
+        {
+            tempShootId--;
+        }
+        UpdateShootIdText(); // Update the UI text after the decrease
     }
 }
