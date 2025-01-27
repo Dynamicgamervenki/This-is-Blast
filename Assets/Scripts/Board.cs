@@ -5,11 +5,22 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+public enum GemPattern
+{
+    SplitHalf,   // Left half one color, right half another color
+    StarShape,   // Star shape pattern (you can customize this)
+    RandomFill,  // Random pattern
+    CustomPattern, // Custom pattern (you can define this)
+    StripedRows   
+}
+
+
 public class Board : MonoBehaviour
 {
     public int width;
     public int height;
-
+    public GemPattern gemPattern;
+    
     public float gemSpeed = 5.0f;
     public GameObject bgTilePrefab;
     public Gem[] gems;
@@ -18,6 +29,7 @@ public class Board : MonoBehaviour
     public Gem[,] allGems;
     
     public List<Gem> bottomGems = new List<Gem>();
+    public List<Gem> DesroyeedGems = new List<Gem>();
     void Start()
     {
         allGems = new Gem[width, height];
@@ -31,29 +43,59 @@ public class Board : MonoBehaviour
             for (int j = 0; j < height; j++)
             {
                 Vector2 position = new Vector2(i, j);
-                GameObject bgTile = Instantiate(bgTilePrefab,position,Quaternion.identity);
+                GameObject bgTile = Instantiate(bgTilePrefab, position, Quaternion.identity);
                 bgTile.transform.SetParent(transform);
                 bgTile.name = "BgTile_" + i + "," + j;
-                
-                int gemToUse;               //temporory spawn logic for basic testing
-                if (i < width / 2) // Left half of the board
-                {
-                    gemToUse = Random.Range(0, gems.Length / 2);
-                }
-                else // Right half of the board
-                {
-                    gemToUse = Random.Range(gems.Length / 2, gems.Length);
-                }
-            
+
+                // Get gem index based on the selected pattern
+                int gemToUse = GetGemBasedOnPattern(i, j);
                 SpawnGem(new Vector2Int(i, j), gems[gemToUse]);
-                if (j == 0)
-                {
-                    bottomGems.Add(allGems[i,j]);
-                }
             }
         }
 
         UpdateBottomGemsList();
+    }
+
+    private int GetGemBasedOnPattern(int i, int j)
+    {
+        switch (gemPattern)
+        {
+            case GemPattern.SplitHalf:
+                // Left half one color, right half another color
+                if (i < width / 2)
+                    return Random.Range(0, gems.Length / 2); // First half
+                else
+                    return Random.Range(gems.Length / 2, gems.Length); // Second half
+
+            case GemPattern.StarShape:
+                // Star shape pattern (e.g. gems near the center form a star)
+                if (Mathf.Abs(i - width / 2) + Mathf.Abs(j - height / 2) <= 3)  // Simple star-like logic
+                    return Random.Range(0, gems.Length);  // Central area gets random gems
+                else
+                    return Random.Range(gems.Length / 2, gems.Length);  // Outer area gets different gems
+
+            case GemPattern.RandomFill:
+                // Randomly fill the grid with all gems
+                return Random.Range(0, gems.Length);
+
+            case GemPattern.CustomPattern:
+                // You can define any custom pattern here
+                return Random.Range(0, gems.Length);
+            
+            case GemPattern.StripedRows:
+                // Alternate colors based on row index, considering width
+                int rowBlock = i / 2; // Divide the width into blocks of two columns
+
+                // Alternate color sets for each row (alternating between two colors)
+                if (rowBlock % 2 == 0)
+                    return Random.Range(0, gems.Length / 2);  // First color set (left half)
+                else
+                    return Random.Range(gems.Length / 2, gems.Length);  // Second color set (right half)
+
+
+            default:
+                return Random.Range(0, gems.Length); // Default to random if no pattern is selected
+        }
     }
     
     private void SpawnGem(Vector2Int pos,Gem gemToSpawn)
@@ -92,8 +134,7 @@ public class Board : MonoBehaviour
             nullCounter = 0;
         }
 
-       UpdateBottomGemsList();
-
+        UpdateBottomGemsList();
 //        Debug.Log("Bottom list updated!");
     }
     

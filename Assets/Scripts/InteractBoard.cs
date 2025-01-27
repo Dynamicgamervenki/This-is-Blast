@@ -15,6 +15,8 @@ public class InteractBoard : MonoBehaviour
     public InteractGems[] gems;
     public List<InteractGems> interactGems = new List<InteractGems>();
     private ToMoveBoard moveBoard;
+
+    public GameObject BulletPrefab;
     private void Awake()
     {
         board = FindObjectOfType<Board>();
@@ -50,7 +52,6 @@ public class InteractBoard : MonoBehaviour
                 gem.name = "Gem - " + i + "," + j;
                 gem.gameObject.layer = 6;
                 interactGems.Add(gem);
-                gem.shootId = 10;
             }
         }
     }
@@ -83,18 +84,16 @@ public class InteractBoard : MonoBehaviour
     private IEnumerator MoveToBoard(InteractGems iGem, Gem bGem)
     {
         // Wait for 0.1 seconds before starting movement
-        yield return new WaitForSeconds(0.1f);
-
-        // Move gem to the board
-        float elapsedTime = 0f;
-        Vector3 startingPos = iGem.transform.position;
-        Vector3 targetPos = moveBoard.bgTilesTransform[0].position;
         
+        Vector3 targetPos = moveBoard.bgTilesTransform[0].position;
         iGem.transform.position = targetPos;
+        
+        yield return new WaitForSeconds(0.1f);
         Destroy(bGem.gameObject);
         board.bottomGems.Remove(bGem);
-        Debug.Log("Destroyed " + bGem.name + "current count :  " + iGem.bGemDestoryed );
         iGem.bGemDestoryed++;
+        Debug.Log("Destroyed " + bGem.name + "current count :  " + iGem.bGemDestoryed );
+        
 
         // Check if enough gems are destroyed, then proceed to the next step
         if (iGem.bGemDestoryed >= iGem.shootId)
