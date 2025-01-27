@@ -9,8 +9,6 @@ public enum GemPattern
 {
     SplitHalf,   // Left half one color, right half another color
     StarShape,   // Star shape pattern (you can customize this)
-    RandomFill,  // Random pattern
-    CustomPattern, // Custom pattern (you can define this)
     StripedRows   
 }
 
@@ -73,14 +71,6 @@ public class Board : MonoBehaviour
                     return Random.Range(0, gems.Length);  // Central area gets random gems
                 else
                     return Random.Range(gems.Length / 2, gems.Length);  // Outer area gets different gems
-
-            case GemPattern.RandomFill:
-                // Randomly fill the grid with all gems
-                return Random.Range(0, gems.Length);
-
-            case GemPattern.CustomPattern:
-                // You can define any custom pattern here
-                return Random.Range(0, gems.Length);
             
             case GemPattern.StripedRows:
                 // Alternate colors based on row index, considering width
@@ -129,13 +119,16 @@ public class Board : MonoBehaviour
                     allGems[x,y - nullCounter] = allGems[x, y];
                     allGems[x, y] = null;
                 }
+
+                if (y == 0)
+                {
+                    bottomGems.Add(allGems[x, y]);
+                    bottomGems = bottomGems.Distinct().ToList();
+                }
             }
             
             nullCounter = 0;
         }
-
-        UpdateBottomGemsList();
-//        Debug.Log("Bottom list updated!");
     }
     
     

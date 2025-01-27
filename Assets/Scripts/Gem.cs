@@ -6,13 +6,6 @@ public class Gem : MonoBehaviour
     public Vector2Int posIndex;
     [HideInInspector]
     public Board board;
-
-    public InteractBoard interactBoard;
-    public int shootId = 0;
-    public int bGemDestoryed = 0;
-
-    public bool mousePressed;
-    
     public enum GemType {blue ,green,red,yellow,purple}
     public GemType type;
 

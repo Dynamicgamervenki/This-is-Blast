@@ -104,7 +104,11 @@ MonoBehaviour:
   mousePressed: 0
   shootId: 18
   bGemDestoryed: 0
+  pos: {fileID: 0}
   type: 0
+  isMoving: 0
+  shootSpeed: 25
+  textField: {fileID: 0}
 --- !u!61 &3292079241082147307
 BoxCollider2D:
   m_ObjectHideFlags: 0
