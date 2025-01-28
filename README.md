@@ -68,6 +68,25 @@ Developed using **Unity 3D** with **C# scripting**, this project demonstrates de
 
 ---
 
+
+## **Screenshots**
+Here are some in-game screenshots to showcase the gameplay and visuals:
+
+### **Level 1**
+![Image](https://github.com/user-attachments/assets/eb2ba36d-0e71-431f-9cb7-a053a0e4fe4e)
+
+### **Gem Interaction**
+![Image](https://github.com/user-attachments/assets/25ba7ecf-60ea-4764-8e09-79ceddce2cbb)
+
+### **Other Levels**
+![Image](https://github.com/user-attachments/assets/2f635c72-85f9-4f37-b3eb-74a1480c7e01)
+![Image](https://github.com/user-attachments/assets/0ca8e99f-c2b1-404b-a525-eedad36e707e)
+![Image](https://github.com/user-attachments/assets/35b0dc42-9df4-4d4a-b7db-e36d6140272c)
+
+*Replace the paths above (`path/to/screenshotX.png`) with the actual file paths or URLs of your screenshots.*
+
+---
+
 ## **Project Highlights**
 - **Smooth Gem Movement:** Achieved using `Vector2.Lerp` for natural transitions.
 - **Dynamic Gem Logic:** Each gem’s behavior adapts based on interactions and type.
